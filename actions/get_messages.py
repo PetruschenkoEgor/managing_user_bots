@@ -1,12 +1,9 @@
-import asyncio
-import os
-
 from colorama import Fore
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from telethon.tl.types import Message
 
-from config.config import API_ID, API_HASH, PHONE_NUMBERS
+from config.config import API_HASH, API_ID
 
 
 async def get_messages(session_str: str, channel: str, limit: int = 5) -> list[Message]:

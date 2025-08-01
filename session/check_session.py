@@ -1,9 +1,10 @@
 import json
+
 from colorama import Fore
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
-from config.config import API_ID, API_HASH
+from config.config import API_HASH, API_ID
 
 
 async def check_create_session(number: str) -> str | None:
@@ -12,7 +13,7 @@ async def check_create_session(number: str) -> str | None:
     """
     client = None
     try:
-        with open('sessions.json', 'r') as f:
+        with open("sessions.json", "r") as f:
             sessions = json.load(f)
             session_str = sessions.get(number)
             if not session_str:

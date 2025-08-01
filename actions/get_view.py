@@ -3,7 +3,7 @@ from telethon import TelegramClient
 from telethon.sessions import StringSession
 
 from actions.get_messages import get_messages
-from config.config import API_ID, API_HASH
+from config.config import API_HASH, API_ID
 
 
 async def get_views(session_str: str, channel: str, message_limit: int = 5) -> None:

@@ -1,14 +1,13 @@
 import asyncio
-import os
 
 from colorama import Fore
 
 from actions.get_view import get_views
+from actions.joining_channels import join_channels
 from actions.send_reaction import send_reaction
-from config.config import PHONE_NUMBERS, CHANNELS
+from config.config import CHANNELS, PHONE_NUMBERS
 from session.check_session import check_create_session
 from session.create_session import create_session
-from actions.joining_channels import join_channels
 
 
 async def main():

@@ -2,7 +2,7 @@ from colorama import Fore
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
-from config.config import API_ID, API_HASH
+from config.config import API_HASH, API_ID
 from session.write_session_str import write_session_str
 
 

@@ -1,15 +1,14 @@
 import asyncio
+import random
 
 from colorama import Fore
 from telethon import TelegramClient
 from telethon.sessions import StringSession
-import random
-
 from telethon.tl import types
 from telethon.tl.functions.messages import SendReactionRequest
 
 from actions.get_messages import get_messages
-from config.config import API_ID, API_HASH
+from config.config import API_HASH, API_ID
 
 
 async def send_reaction(session_str: str, channel: str, messages_limit: int = 5) -> None:
@@ -28,17 +27,15 @@ async def send_reaction(session_str: str, channel: str, messages_limit: int = 5)
             types.ReactionEmoji(emoticon="😍"),
             types.ReactionEmoji(emoticon="👀"),
             types.ReactionEmoji(emoticon="✍️"),
-            types.ReactionEmoji(emoticon="🦄")
+            types.ReactionEmoji(emoticon="🦄"),
         ]
 
         for msg in messages:
             try:
                 reaction = random.choice(reactions)
-                await client(SendReactionRequest(
-                    peer=channel,
-                    msg_id=msg.id,
-                    reaction=[reaction] if reaction else None
-                ))
+                await client(
+                    SendReactionRequest(peer=channel, msg_id=msg.id, reaction=[reaction] if reaction else None)
+                )
                 print(f"Реакция {'пустая' if not reaction else reaction.emoticon} отправлена на пост {msg.id}")
                 await asyncio.sleep(1)
             except Exception as e:

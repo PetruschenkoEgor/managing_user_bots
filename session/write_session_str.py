@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 async def write_session_str(session_data: Dict[str, Any]) -> None:
