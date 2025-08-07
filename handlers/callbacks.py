@@ -45,12 +45,14 @@ async def handler_action_menu(event):
         elif current_state == "WAITING_BOTS_LIMIT_JOIN":
             user_state.set_data(user_id, "bots_limit_join", int(text))
             # Каналы для вступления
-            channel = user_state.get_data_value(user_id, "channels_join")
+            channels = user_state.get_data_value(user_id, "channels_join")
+            # Количество ботов для вступления
+            bots_limit = user_state.get_data_value(user_id, "bots_limit_join")
 
             # НУЖНО ПРОРАБОТАТЬ МОМЕНТ, ЕСЛИ БУДУТ ОШИБКИ ПРИ ВСТУПЛЕНИИ
-            await event.respond(f"Готово! Ботов вступит: {user_state.get_data_value(user_id, "bots_limit_join")} Каналы: {", ".join(channel)}.")
+            await event.respond(f"Готово! Ботов вступит: {bots_limit} Каналы: {", ".join(channels)}.")
             # Вступаем в каналы
-            await choice_join(channel)
+            await choice_join(channels, bots_limit)
             # Сбрасываем состояние и удаляем данные
             user_state.clear(user_id)
 
@@ -65,13 +67,15 @@ async def handler_action_menu(event):
             await event.respond("Сколько ботов должно просмотреть?")
         elif current_state == "WAITING_BOTS_LIMIT_VIEW":
             user_state.set_data(user_id, "bots_limit_view", int(text))
-            # Каналы для вступления
-            channel = user_state.get_data_value(user_id, "channels_view")
+            # Каналы для просмотра
+            channels = user_state.get_data_value(user_id, "channels_view")
             # Количество постов для просмотра
             posts = user_state.get_data_value(user_id, "posts_limit_view")
-            await event.respond(f"Готово! Постов: {user_state.get_data_value(user_id, "posts_limit_view")}. Ботов просмотрит: {user_state.get_data_value(user_id, "bots_limit_view")}. Каналы: {", ".join(channel)}")
+            # Количество ботов для просмотра
+            bots_limit = user_state.get_data_value(user_id, "bots_limit_view")
+            await event.respond(f"Готово! Постов: {posts}. Ботов просмотрит: {bots_limit}. Каналы: {", ".join(channels)}")
             # Просматриваем посты
-            await choice_view(channel, posts)
+            await choice_view(channels, posts, bots_limit)
             user_state.clear(user_id)
 
         # Обработка для "Поставить реакции"
@@ -86,12 +90,14 @@ async def handler_action_menu(event):
         elif current_state == "WAITING_BOTS_LIMIT_REACTION":
             user_state.set_data(user_id, "bots_limit_reaction", int(text))
             # Каналы для отправки реакций
-            channel = user_state.get_data_value(user_id, "channels_reaction")
+            channels = user_state.get_data_value(user_id, "channels_reaction")
             # Количество постов для отправки реакций
             posts = user_state.get_data_value(user_id, "posts_limit_reaction")
-            await event.respond((f"Готово! Постов: {posts}. Ботов поставит: {user_state.get_data_value(user_id, "bots_limit_reaction")}. Каналы: {", ".join(channel)}"))
+            # Количество ботов для отправки реакций
+            bots_limit = user_state.get_data_value(user_id, "bots_limit_reaction")
+            await event.respond((f"Готово! Постов: {posts}. Ботов поставит: {bots_limit}. Каналы: {", ".join(channels)}"))
             # Отправляем реакции
-            await choice_reaction(channel, posts)
+            await choice_reaction(channels, posts, bots_limit)
             user_state.clear(user_id)
     # Если состояние не распознано
     else:
