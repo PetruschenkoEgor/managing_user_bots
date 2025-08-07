@@ -6,13 +6,13 @@ from actions.get_messages import get_messages
 from config.config import API_HASH, API_ID
 
 
-async def get_views(session_str: str, channel: str, message_limit: int = 5) -> None:
+async def get_views(session_str: str, channel: str, post_limit: int = 5) -> None:
     """
     Отмечает посты как просмотренные.
     """
     async with TelegramClient(StringSession(session_str), API_ID, API_HASH) as client:
         try:
-            messages = await get_messages(session_str, channel, limit=message_limit)
+            messages = await get_messages(session_str, channel, limit=post_limit)
 
             for msg in messages:
                 entity = await client.get_entity(channel)

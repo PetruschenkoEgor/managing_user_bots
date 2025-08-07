@@ -11,12 +11,13 @@ from actions.get_messages import get_messages
 from config.config import API_HASH, API_ID
 
 
-async def send_reaction(session_str: str, channel: str, messages_limit: int = 5) -> None:
+async def send_reaction(session_str: str, channel: str, post_limit: int = 5) -> None:
     """
     Отправка рандомной реакции на пост(в том числе пустая реакция - некоторые боты пропускают реакцию).
     """
     async with TelegramClient(StringSession(session_str), API_ID, API_HASH) as client:
-        messages = await get_messages(session_str, channel, limit=messages_limit)
+        entity = await client.get_entity(channel)
+        messages = await get_messages(session_str, entity, limit=post_limit)
 
         reactions = [
             None,  # Нет реакции
@@ -34,7 +35,7 @@ async def send_reaction(session_str: str, channel: str, messages_limit: int = 5)
             try:
                 reaction = random.choice(reactions)
                 await client(
-                    SendReactionRequest(peer=channel, msg_id=msg.id, reaction=[reaction] if reaction else None)
+                    SendReactionRequest(peer=entity, msg_id=msg.id, reaction=[reaction] if reaction else None)
                 )
                 print(f"Реакция {'пустая' if not reaction else reaction.emoticon} отправлена на пост {msg.id}")
                 await asyncio.sleep(1)
