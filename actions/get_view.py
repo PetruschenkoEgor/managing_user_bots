@@ -1,6 +1,7 @@
 from colorama import Fore
 from telethon import TelegramClient
 from telethon.sessions import StringSession
+from telethon.tl.functions.messages import GetMessagesViewsRequest
 
 from actions.get_messages import get_messages
 from config.config import API_HASH, API_ID
@@ -16,7 +17,13 @@ async def get_views(session_str: str, channel: str, post_limit: int = 5) -> None
 
             for msg in messages:
                 entity = await client.get_entity(channel)
-                await client.send_read_acknowledge(entity, msg)
+                # await client.send_read_acknowledge(entity, msg)
+                # Получение просмотров
+                await client(GetMessagesViewsRequest(
+                    peer=entity,
+                    id=[msg.id],
+                    increment=True  # Увеличение просмотров
+                ))
                 print(Fore.GREEN + f"Просмотрено: {msg.id}")
 
         except Exception as e:
