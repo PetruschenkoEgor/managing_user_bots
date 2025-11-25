@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      API_ID: ${API_ID}
+      API_HASH: ${API_HASH}
+      BOT_TOKEN: ${BOT_TOKEN}
+      NUMBERS: ${NUMBERS}
+      CHANNELS: ${CHANNELS}
+    restart: unless-stopped
+    command: python main_bot.py
